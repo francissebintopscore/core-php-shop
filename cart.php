@@ -1,5 +1,20 @@
 <?php
 require_once 'templates/header.php';
+
+use Includes\Helpers\User;
+use Includes\Db\Cart;
+
+
+if ( !User::userLoggedIn() ) 
+{
+    header('Location: '. BASE_URL);
+    die();
+}
+
+$cart = new Cart();
+$items = $cart->getCartItems();
+// print_r($items);
+$imgBase = UPLOADS_URL.'products/';
 ?>
 
 
@@ -22,48 +37,39 @@ require_once 'templates/header.php';
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                <img src="http://localhost/sebin/php/custom/study/shop/assets/uploads/products/cooker.jpg"
-                                    width="145" alt="product-img">
-                            </td>
-                            <td>
-                                <span>Pressure Cooker</span>
-                            </td>
-                            <td>
-                                <span class="price">145</span> &#8377;
-                            </td>
-                            <td>
-                                <input type="number" class="product-qty" min="0" value="1">
-                            </td>
-                            <td>
-                                <span class="total">145</span> &#8377;
-                            </td>
-                            <td>
-                                <span>&#9940;</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <img src="http://localhost/sebin/php/custom/study/shop/assets/uploads/products/shirt.jpg"
-                                    width="145" alt="product-img">
-                            </td>
-                            <td>
-                                <span>Shirt</span>
-                            </td>
-                            <td>
-                                <span class="price">1000</span> &#8377;
-                            </td>
-                            <td>
-                                <input type="number" class="product-qty" min="0" value="1">
-                            </td>
-                            <td>
-                                <span class="total">1000</span> &#8377;
-                            </td>
-                            <td>
-                                <span>&#9940;</span>
-                            </td>
-                        </tr>
+                        <?php
+                        foreach ( $items as $key => $value) {
+                            $id = $value['product_data']['id'];
+                            $img = $imgBase . $value['product_data']['image'];
+                            $name = $value['product_data']['name'];
+                            $amount = $value['product_data']['amount'];
+                            $qty = $value['qty'];
+                            $totalAmount = intval( $qty ) * floatval($amount);
+                            ?>
+                            <tr data-product-id="<?php echo $id;?>">
+                                <td>
+                                    <img src="<?php echo $img;?>"
+                                        width="145" alt="product-img">
+                                </td>
+                                <td>
+                                    <span><?php echo $name;?></span>
+                                </td>
+                                <td>
+                                    <span class="price"><?php echo $amount;?></span> &#8377;
+                                </td>
+                                <td>
+                                    <input type="number" class="product-qty" min="0" value="<?php echo $qty;?>">
+                                </td>
+                                <td>
+                                    <span class="total"><?php echo $totalAmount;?></span> &#8377;
+                                </td>
+                                <td>
+                                    <span class="cart-remove">&#9940;</span>
+                                </td>
+                            </tr>
+                            <?php
+                        }
+                        ?>
                     </tbody>
                 </table>
             </div>

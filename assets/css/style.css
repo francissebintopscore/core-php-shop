@@ -25,3 +25,6 @@
 .login-form-container{
     width: 50%;
 }
+#cart-table .cart-remove{
+    cursor: pointer;
+}

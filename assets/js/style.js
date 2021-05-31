@@ -14,7 +14,23 @@ $(document).ready(function(){
         {
             return;
         }
-        alert('he;;');
-    })
+        // alert('he;;');
+    });
+
+    $('#cart-table .cart-remove').on('click',function(){
+        // var productId = $(this).parent().parent().data('product-id');
+        var element = $(this).parent().parent();
+        var productId = element.data('product-id');
+
+        $.ajax({
+                url : 'actions/do_ajax.php',
+                method:'GET',
+                data: { productId : productId, action : 'removeCartItem'},
+                success: function(response){
+                    console.log(response);
+                    element.remove();
+                }
+        });
+    });
 
 });
