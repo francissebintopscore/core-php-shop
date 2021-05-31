@@ -1,27 +1,29 @@
 <?php
 namespace Includes\Db;
 
-use Includes\Db\Connection as DbConnection;
-
-class Product extends DbConnection{
+class Product extends Query{
 
     protected $table = 'products';
 
 
-    public function findAll(){
-        $sql = "SELECT * FROM `products` WHERE `status`=?";
+    // public function findAll(){
+    //     $sql = "SELECT * FROM `products` WHERE `status`=?";
 
-        $result = $this->sqlSelect( $sql, 's', 'publish' );
+    //     $result = $this->sqlSelect( $sql, 's', 'publish' );
         
-        return $this->extractOutput( $result );
-    }
+    //     return $this->extractOutput( $result );
+    // }
 
-    public function find($id){
+    // public function find($id){
 
-        $sql = "SELECT * FROM `products` WHERE `id`=?";
+    //     $sql = "SELECT * FROM `products` WHERE `id`=?";
 
-        $result = $this->sqlSelect( $sql, 'i', $id );
+    //     $result = $this->sqlSelect( $sql, 'i', $id );
 
-        return $this->extractOutput( $result );
+    //     return $this->extractOutput( $result );
+    // }
+
+    public static function getProductStock( $id ){
+
     }
 } 

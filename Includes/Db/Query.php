@@ -99,20 +99,54 @@ class Query extends Connection{
     }
     
     public function findAll(){
-        $sql = "SELECT * FROM `products` WHERE `status`=?";
+        $sql = "SELECT * FROM $this->table WHERE `status`=?";
 
         $result = $this->sqlSelect( $sql, 's', 'publish' );
         
         return $this->extractOutput( $result );
     }
 
-    public function find($id){
+    public function find($id, $selects='*'){
 
-        $sql = "SELECT * FROM `products` WHERE `id`=?";
+        $sql = "SELECT $selects FROM $this->table WHERE `id`=?";
 
         $result = $this->sqlSelect( $sql, 'i', $id );
 
         return $this->extractOutput( $result );
+    }
+
+    public function rawQuery($sql){
+        $result = $this->conn->query($sql);
+        if ($result->num_rows > 0) {
+            return $result;
+        }
+        return [];
+    }
+
+    
+    public static function update( $data, $id, $table ){
+        $query = new Query();
+        try 
+        {
+            $stmt = $query->conn->prepare("UPDATE $table SET `cart_items`=? WHERE `id`=?");
+
+            $stmt->bind_param('si', $data['cart_items'], $id);
+            $stmt->execute();
+
+            if( !$stmt->error )
+            {
+                return true;
+            }
+            return false;
+            $stmt->close();
+            $query->conn->close();
+
+        } 
+        catch (\Throwable $th) 
+        {
+            return false;
+        }
+       
     }
 
     

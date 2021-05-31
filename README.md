@@ -37,4 +37,8 @@ Check out
         details
         address
         payment method
+
+
+Bug
+    issue in cart if product is hidden
         

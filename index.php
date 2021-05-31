@@ -1,5 +1,6 @@
 <?php
 require_once 'templates/header.php';
+print_r($_COOKIE);
 ?>
     <div class="container mg-top-30">
         <div class="row">

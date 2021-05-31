@@ -4,14 +4,19 @@ require_once 'templates/header.php';
 use Includes\Db\Product;
 
 $products = new Product();
+$products->select('amount,name,id,image');
+$products->where('status', '=', 'publish');
+$products->where('stock', '>', 0);
+$products->whereOr('stock', '=', -1);
+$products = $products->get();
 $imgBase = UPLOADS_URL.'products/';
-// print_r( $products->findAll() );
+
 ?>
 <div class="container au-sep">
     <div class="row">
 
     <?php
-    foreach ( $products->findAll() as $key => $value ){
+    foreach ( $products as $key => $value ){
 
         $id = $value['id'];
         $img = $imgBase . $value['image'];
