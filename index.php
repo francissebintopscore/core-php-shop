@@ -1,7 +1,7 @@
 <?php
 require_once 'templates/header.php';
 ?>
-    <div class="container" style="margin-top:30px">
+    <div class="container mg-top-30">
         <div class="row">
             <div class="col-sm-4">
                 <h2>About Me</h2>

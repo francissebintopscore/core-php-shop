@@ -79,4 +79,8 @@ class Connection{
         }
         return $output;
     }
+
+    protected function getConnection(){
+        return $this->connection;
+    }
 }

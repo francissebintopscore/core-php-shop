@@ -2,3 +2,26 @@
     margin-top :50px;
     margin-bottom :50px;
 }
+.au-heading{
+    text-align: center;
+    color: #28a745;
+}
+.mg-top-30{
+    margin-top: 30px;
+}
+.mg-bot-30{
+    margin-bottom: 30px;
+}
+.cart-update-container{
+    text-align: right;
+}
+#cart-total-table tr{
+    border-bottom: 1px solid #343a40;
+}
+.proceed-checkout-container a{
+    display: block;
+}
+/* login form styles */
+.login-form-container{
+    width: 50%;
+}
