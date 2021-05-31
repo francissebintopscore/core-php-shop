@@ -1,6 +1,13 @@
 <?php
 require_once 'templates/header.php';
+
 use Includes\Helpers\Security;
+use Includes\Helpers\User;
+
+if (User::userLoggedIn()) 
+{
+    header('Location: '. BASE_URL);
+}
 ?>
 
 <div class="container" style="margin-top:30px">

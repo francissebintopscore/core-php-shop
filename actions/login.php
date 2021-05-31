@@ -18,9 +18,9 @@ if( isset( $_POST['submit'] ) ){
         $result = $user->get();
         
         $_SESSION['user_data'] = ( isset( $result[0] ) ) ? $result[0] : '';
-
-        print_r($_SESSION);
-        print_r($result[0]);
+        header('Location: '. BASE_URL);
+        // print_r($_SESSION);
+        // print_r($result[0]);
     }
     else{
         echo "problem";
