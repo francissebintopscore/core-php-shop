@@ -104,7 +104,7 @@ class Cart extends Query{
         $items = $this->cartItems;
         if( empty( $items ) )
         {
-            return;
+            return array();
         }
         $productIds =array();
 
@@ -114,7 +114,7 @@ class Cart extends Query{
         }
         sort($productIds);
         $productIds = implode( ',',$productIds );
-        $sql = "SELECT `id`,`name`,`image`,`amount` FROM `products` WHERE `id` IN($productIds)";
+        $sql = "SELECT `id`,`name`,`image`,`amount`, `stock` FROM `products` WHERE `id` IN($productIds)";
         $productIds = explode( ',',$productIds );
         $result = $this->rawQuery($sql);
 
@@ -122,12 +122,21 @@ class Cart extends Query{
         while($row = $result->fetch_assoc()) 
         {
             
-           
+        //    print_r($row);
+        //    echo "<br>";
             $productId = ( isset( $productIds[$i] ) ) ? $productIds[$i] : 0;
 
-            if( $row['id'] == $productId )
+            // if( $row['id'] == $productId )
+            // {
+            //     $items[$i]['product_data'] = $row; 
+            // }
+            foreach( $items as $key => $value )
             {
-                $items[$i]['product_data'] = $row; 
+                if( $row['id'] == $value['product_id'] )
+                {
+                    $items[$key]['product_data'] = $row; 
+                    break;
+                }
             }
             
             $i++;

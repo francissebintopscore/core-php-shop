@@ -13,8 +13,10 @@ if ( !User::userLoggedIn() )
 
 $cart = new Cart();
 $items = $cart->getCartItems();
-$items = $cart->mergeItemWithProducts($items);
 // print_r($items);
+$items = $cart->mergeItemWithProducts($items);
+// print_r($_COOKIE);
+print_r($items);
 $imgBase = UPLOADS_URL.'products/';
 $subTotal = 0.00;
 $shipping = 50.00;
@@ -42,7 +44,7 @@ $shipping = 50.00;
                     <tbody>
                         <?php
                         foreach ( $items as $key => $value) {
-                            $id = $value['product_id'];
+                            $id = $value['product_data']['id'];
                             $img = $imgBase . $value['product_data']['image'];
                             $name = $value['product_data']['name'];
                             $amount = $value['product_data']['amount'];

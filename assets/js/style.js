@@ -14,7 +14,16 @@ $(document).ready(function(){
         {
             return;
         }
-        // alert('he;;');
+        var datas = [];
+        $('#cart-table tbody tr').each(function(){
+            console.log($(this));
+            let data = {
+                product_id  : $(this).data('product-id'),
+                qty         : $(this).find('.product-qty').val()
+            };
+            datas.push(data);
+        });
+        console.log(datas);
     });
 
     $('#cart-table .cart-remove').on('click',function(){
