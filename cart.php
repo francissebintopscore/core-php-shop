@@ -16,7 +16,7 @@ $items = $cart->getCartItems();
 // print_r($items);
 $items = $cart->mergeItemWithProducts($items);
 // print_r($_COOKIE);
-print_r($items);
+// print_r($items);
 $imgBase = UPLOADS_URL.'products/';
 $subTotal = 0.00;
 $shipping = 50.00;
@@ -48,6 +48,7 @@ $shipping = 50.00;
                             $img = $imgBase . $value['product_data']['image'];
                             $name = $value['product_data']['name'];
                             $amount = $value['product_data']['amount'];
+                            $maxStocks = $value['product_data']['stock'];
                             $qty = $value['qty'];
                             $totalAmount = intval( $qty ) * floatval($amount);
                             $subTotal += $totalAmount;
@@ -64,7 +65,7 @@ $shipping = 50.00;
                                     <span class="price"><?php echo $amount;?></span> &#8377;
                                 </td>
                                 <td>
-                                    <input type="number" class="product-qty" min="0" value="<?php echo $qty;?>">
+                                    <input type="number" class="product-qty" min="0" max="<?php echo $maxStocks;?>" value="<?php echo $qty;?>">
                                 </td>
                                 <td>
                                     <span class="total"><?php echo $totalAmount;?></span> &#8377;
@@ -117,7 +118,7 @@ $shipping = 50.00;
                 </table>
 
                 <div class="proceed-checkout-container mg-bot-30">
-                    <a href="#" class="btn btn-success">Proceed to checkout</a>
+                    <a href="checkout.php" class="btn btn-success">Proceed to checkout</a>
                 </div>
             </div>
         </div>

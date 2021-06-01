@@ -87,6 +87,14 @@ class Cart extends Query{
         
     }
 
+    public static function updateCartItem($productDatas)
+    {
+        $cart = new Cart();
+        $cart->cartItems = $productDatas;
+        $cart->setCartCookie();
+    }
+
+
     public static function saveCartItems()
     {
 

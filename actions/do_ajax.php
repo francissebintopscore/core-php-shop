@@ -46,6 +46,13 @@ elseif ( $_SERVER['REQUEST_METHOD'] == 'POST' ){
                             }
                             break;
 
+         case 'updateCartItems' :
+                            $productDatas = ( isset( $_POST['productDatas'] ) ) ? $_POST['productDatas'] : array();
+                            Cart::updateCartItem( $productDatas );
+                            // print_r($productDatas);
+                            exit('success');
+                            break;
+
         default :
                 echo "Thulasi";
                 break;

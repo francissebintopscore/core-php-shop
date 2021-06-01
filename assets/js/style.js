@@ -12,18 +12,28 @@ $(document).ready(function(){
 
         if( $(this).hasClass('disabled') )
         {
-            return;
+            // return;
         }
         var datas = [];
         $('#cart-table tbody tr').each(function(){
-            console.log($(this));
+            // console.log($(this));
             let data = {
                 product_id  : $(this).data('product-id'),
                 qty         : $(this).find('.product-qty').val()
             };
             datas.push(data);
         });
-        console.log(datas);
+
+        $.ajax({
+                url : 'actions/do_ajax.php',
+                method:'POST',
+                data: { productDatas :datas, action : 'updateCartItems' },
+                success: function(response){
+                    console.log(response);
+                    // element.remove();
+                    window.location.reload();
+                }
+        });
     });
 
     $('#cart-table .cart-remove').on('click',function(){
