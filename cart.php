@@ -13,8 +13,11 @@ if ( !User::userLoggedIn() )
 
 $cart = new Cart();
 $items = $cart->getCartItems();
+$items = $cart->mergeItemWithProducts($items);
 // print_r($items);
 $imgBase = UPLOADS_URL.'products/';
+$subTotal = 0.00;
+$shipping = 50.00;
 ?>
 
 
@@ -39,12 +42,13 @@ $imgBase = UPLOADS_URL.'products/';
                     <tbody>
                         <?php
                         foreach ( $items as $key => $value) {
-                            $id = $value['product_data']['id'];
+                            $id = $value['product_id'];
                             $img = $imgBase . $value['product_data']['image'];
                             $name = $value['product_data']['name'];
                             $amount = $value['product_data']['amount'];
                             $qty = $value['qty'];
                             $totalAmount = intval( $qty ) * floatval($amount);
+                            $subTotal += $totalAmount;
                             ?>
                             <tr data-product-id="<?php echo $id;?>">
                                 <td>
@@ -73,43 +77,51 @@ $imgBase = UPLOADS_URL.'products/';
                     </tbody>
                 </table>
             </div>
-            <div class="cart-update-container mg-top-30">
+            <div class="cart-update-container mg-top-30 mg-bot-30">
                 <button class="btn btn-success disabled" id="cart-update-btn">Update</button>
             </div>
         </div>
     </div>
+    
+    <?php
+    if ($subTotal >0) {
+        ?>
+        <div class="row">
+            <div class="col-sm-6"></div>
+            <div class="col-sm-6 mg-top-30">
+                <h3>CART TOTALS</h3>
+                
+                <table class="table" id="cart-total-table">
+                    <tbody>
+                        <tr>
+                            <td>SUBTOTAL</td>
+                            <td>
+                                <span class="sub-total"><?php echo $subTotal; ?></span> &#8377;
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>SHIPPING</td>
+                            <td><?php echo $shipping; ?> &#8377;</td>
+                        </tr>
+                        <tr>
+                            <td>TOTAL</td>
+                            <td>
+                                <?php
+                                $subTotal += $shipping; ?>
+                                <span class="sub-total"><?php echo $subTotal; ?></span> &#8377;
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
 
-    <div class="row">
-    <div class="col-sm-6"></div>
-        <div class="col-sm-6 mg-top-30">
-            <h3>CART TOTALS</h3>
-            
-            <table class="table" id="cart-total-table">
-                <tbody>
-                    <tr>
-                        <td>SUBTOTAL</td>
-                        <td>
-                            <span class="sub-total">1000</span> &#8377;
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>SHIPPING</td>
-                        <td>0 &#8377;</td>
-                    </tr>
-                    <tr>
-                        <td>TOTAL</td>
-                        <td>
-                        <span class="sub-total">1000</span> &#8377;
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="proceed-checkout-container mg-bot-30">
-                <a href="#" class="btn btn-success">Proceed to checkout</a>
+                <div class="proceed-checkout-container mg-bot-30">
+                    <a href="#" class="btn btn-success">Proceed to checkout</a>
+                </div>
             </div>
         </div>
-    </div>
+        <?php
+    }
+    ?>
 </div>
 
 

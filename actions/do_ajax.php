@@ -30,3 +30,25 @@ if ( $_SERVER['REQUEST_METHOD'] == 'GET' ){
 
 
 }
+elseif ( $_SERVER['REQUEST_METHOD'] == 'POST' ){
+
+    $action =  ( isset( $_POST['action'] ) ) ? $_POST['action'] : '';
+
+    switch( $action ){
+        case 'addCartItem' :
+                            $productId = ( isset( $_POST['productId'] ) ) ? intval( $_POST['productId'] ): 0;
+                            $qty = ( isset( $_POST['qty'] ) ) ? $_POST['qty'] : 1;
+                            if( $productId )
+                            {
+                                $newItem = array( 'product_id'=>$productId, 'qty' => $qty );
+                                Cart::addCartItem( $newItem );
+                                exit('success');
+                            }
+                            break;
+
+        default :
+                echo "Thulasi";
+                break;
+    }
+
+}

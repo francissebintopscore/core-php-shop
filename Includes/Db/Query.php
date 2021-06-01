@@ -123,4 +123,30 @@ class Query extends Connection{
     }
 
     
+    public static function update( $data, $id, $table ){
+        $query = new Query();
+        try 
+        {
+            $stmt = $query->conn->prepare("UPDATE $table SET `cart_items`=? WHERE `id`=?");
+
+            $stmt->bind_param('si', $data['cart_items'], $id);
+            $stmt->execute();
+
+            if( !$stmt->error )
+            {
+                return true;
+            }
+            return false;
+            $stmt->close();
+            $query->conn->close();
+
+        } 
+        catch (\Throwable $th) 
+        {
+            return false;
+        }
+       
+    }
+
+    
 }

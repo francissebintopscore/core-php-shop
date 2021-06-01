@@ -13,16 +13,18 @@ class Cart extends Query{
         parent::__construct();
         $this->userId = isset( $_SESSION['user_data']['id'] ) ? $_SESSION['user_data']['id'] : 0 ;
         $this->setCartItems();
-        $this->mergeItemWithProducts();
+        // $this->mergeItemWithProducts();
         $this->setCartCookie();
     }
     
-    public function getCartItems(){
+    public function getCartItems()
+    {
         // print_r($this->cartItems);
         return $this->cartItems;
     }
 
-    public function setCartItems(){
+    public function setCartItems()
+    {
         
         if( isset( $_COOKIE['cart_items'] ) && !empty( $_COOKIE['cart_items'] ) ){
             $this->cartItems = unserialize( $_COOKIE['cart_items'] );
@@ -33,7 +35,8 @@ class Cart extends Query{
         }
     }
 
-    protected function getUserCartItems(){
+    protected function getUserCartItems()
+    {
         
         $items = $_SESSION['user_data']['cart_items'];
         if( !empty( $items ) ){
@@ -42,11 +45,37 @@ class Cart extends Query{
         }
         return array();
     }
-    public function addCartItems( $item ){
+    public static function addCartItem( $newItem )
+    {
 
+        $cart = new Cart();
+        $items = $cart->getCartItems();
+
+        $flag = true;
+        
+        foreach($items as $key => $item)
+        {
+            if( $item['product_id'] === $newItem['product_id'] ){
+                
+                $items[$key]['qty'] = $item['qty'] + intval($newItem['qty']);
+                // print_r($items[$key]['qty']);
+                $flag = false;
+                break;
+            }
+            
+
+        }
+        if( $flag )
+        {
+            array_push($items, $newItem);
+        }
+        // print_r($items);
+        $cart->cartItems = $items;
+        $cart->setCartCookie();
         
     }
-    public static function removeCartItem( $productId ){
+    public static function removeCartItem( $productId )
+    {
         $cart = new Cart();
         $items = $cart->getCartItems();
         $items = array_filter( $items, function($value) use ($productId){
@@ -58,31 +87,44 @@ class Cart extends Query{
         
     }
 
-    public static function saveCartItems(){
+    public static function saveCartItems()
+    {
 
     }
 
-    protected function setCartCookie(){
+    protected function setCartCookie()
+    {
         $value = serialize( $this->cartItems );
         setcookie( 'cart_items', $value , time() + (86400 * 30), "/");
     }
 
-    protected function mergeItemWithProducts(){
+    public function mergeItemWithProducts()
+    {
 
         $items = $this->cartItems;
+        if( empty( $items ) )
+        {
+            return;
+        }
         $productIds =array();
 
-        foreach( $items as $item){
+        foreach( $items as $item)
+        {
             $productIds = [...$productIds, $item['product_id']];
         }
+        sort($productIds);
         $productIds = implode( ',',$productIds );
         $sql = "SELECT `id`,`name`,`image`,`amount` FROM `products` WHERE `id` IN($productIds)";
+        $productIds = explode( ',',$productIds );
         $result = $this->rawQuery($sql);
 
         $i = 0;
-        while($row = $result->fetch_assoc()) {
+        while($row = $result->fetch_assoc()) 
+        {
             
-            $productId = ( isset( $items[$i]['product_id'] ) ) ? $items[$i]['product_id'] : 0;
+           
+            $productId = ( isset( $productIds[$i] ) ) ? $productIds[$i] : 0;
+
             if( $row['id'] == $productId )
             {
                 $items[$i]['product_data'] = $row; 
@@ -90,6 +132,7 @@ class Cart extends Query{
             
             $i++;
         }
-        $this->cartItems = $items;
+        
+        return $items;
     }
 }

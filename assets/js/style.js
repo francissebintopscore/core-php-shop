@@ -29,8 +29,24 @@ $(document).ready(function(){
                 success: function(response){
                     console.log(response);
                     element.remove();
+                    window.location.reload();
                 }
         });
     });
+
+    $('.ajax-addToCart').on('click',function(e){
+        e.preventDefault();
+        var productId = parseInt( $(this).data('product-id') );
+        // console.log(typeof productId);
+        $.ajax({
+            url : 'actions/do_ajax.php',
+            method:'POST',
+            data: { productId : productId, action : 'addCartItem'},
+            success: function(response){
+                console.log(response);
+                // window.location.reload();
+            }
+    });
+    })
 
 });
