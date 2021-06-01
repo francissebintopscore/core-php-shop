@@ -26,4 +26,28 @@ class Product extends Query{
     public static function getProductStock( $id ){
 
     }
+    public static function updateStock( $qty, $id ){
+        $query = new Query();
+        try 
+        {
+            $stmt = $query->conn->prepare("UPDATE `products` SET `stock`= (`stock`-?) WHERE `id`=?");
+
+            $stmt->bind_param('ii', $qty, $id);
+            $stmt->execute();
+
+            if( !$stmt->error )
+            {
+                return true;
+            }
+            return false;
+            $stmt->close();
+            $query->conn->close();
+
+        } 
+        catch (\Throwable $th) 
+        {
+            return false;
+        }
+       
+    }
 } 

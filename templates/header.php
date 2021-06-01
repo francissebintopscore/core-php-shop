@@ -37,19 +37,19 @@ use Includes\Helpers\User;
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="index.php">Home</a>
+                    <a class="nav-link" href="<?php echo BASE_URL;?>">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="shop.php">Shop</a>
+                    <a class="nav-link" href="<?php echo BASE_URL;?>/shop.php">Shop</a>
                 </li>
                 <?php
                 if( User::userLoggedIn() ){
                     ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="cart.php">Cart</a>
+                        <a class="nav-link" href="<?php echo BASE_URL;?>/cart.php">Cart</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="logout.php">Logout</a>
+                        <a class="nav-link" href="<?php echo BASE_URL;?>/logout.php">Logout</a>
                     </li>
                 <?php
                 }
@@ -57,7 +57,7 @@ use Includes\Helpers\User;
                 {
                     ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="login.php">Login</a>
+                        <a class="nav-link" href="<?php echo BASE_URL;?>/login.php">Login</a>
                     </li>
                     <?php
                 }

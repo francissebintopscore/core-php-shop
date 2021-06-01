@@ -1,7 +1,11 @@
 {
     "autoload": {
+        "files": ["vendor/stripe/stripe-php/init.php"],
         "psr-4": {
             "Includes\\": "Includes/"
         }
+    },
+    "require": {
+        "stripe/stripe-php": "^7.80"
     }
 }

@@ -30,7 +30,7 @@ class User extends Query
         $user = new User();
         $response  = [];
 
-        $sql = sprintf( "SELECT u.`first_name`,u.`last_name`,u.`contact_number`,
+        $sql = sprintf( "SELECT u.`email`,u.`first_name`,u.`last_name`,u.`contact_number`,
                 a.`address`,a.`postal_code`,a.`city`,a.`state`,a.`country`,
                 a.`landmark` 
                 FROM `users` u 

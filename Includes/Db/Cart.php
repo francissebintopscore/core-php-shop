@@ -105,6 +105,12 @@ class Cart extends Query{
         $value = serialize( $this->cartItems );
         setcookie( 'cart_items', $value , time() + (86400 * 30), "/");
     }
+    public function clearCartItems()
+    {
+        $this->cartItems = [];
+        $this->setCartCookie();
+        // print_r( $this->cartItems );
+    }
 
     public function mergeItemWithProducts()
     {
