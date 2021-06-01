@@ -120,6 +120,7 @@ class Query extends Connection{
         if ($result->num_rows > 0) {
             return $result;
         }
+        return [];
     }
 
     
