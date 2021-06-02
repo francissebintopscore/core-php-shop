@@ -5,23 +5,18 @@ use Includes\Db\Query;
 
 class Order extends Query
 {
-
     protected $table = 'orders';
 
-    public static function create($datas){
-
-
-        $order = new Order();
-        $keys = array_keys($datas);
-        $values = array_values($datas);
+    public function create($datas)
+    {
         $sql = "INSERT INTO `orders`
         (`user_id`, `payment_gateway_id`, `order_note`, 
         `total_amount`, `txn_id`, `payment_status`, `order_created`) 
         VALUES (?,?,?,?,?,?,?)";
 
-        $stmt = $order->conn->prepare($sql);
+        $stmt = $this->conn->prepare($sql);
         $stmt->bind_param(
-            'iisdsss', 
+            'iisdsss',
             $datas['user_id'],
             $datas['payment_gateway_id'],
             $datas['order_note'],
@@ -33,11 +28,9 @@ class Order extends Query
 
         $stmt->execute();
         
-        if( $stmt->error )
-        {
+        if ($stmt->error) {
             return false;
         }
         return $stmt->insert_id;
-
     }
 }

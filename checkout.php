@@ -1,29 +1,35 @@
 <?php
+require_once 'templates/header.php';
 
 use Includes\Db\Cart;
 use Includes\Db\User;
+use Includes\Db\Item;
+use Includes\Helpers\User as HelpersUser;
 
-require_once 'templates/header.php';
+if (!HelpersUser::userLoggedIn()) {
+    header('Location: '. BASE_URL);
+    die();
+}
 
-$userDetails = User::fetchUserDetailsBeforeCheckout();
-// print_r($userDetails);
+$userDetails = User::fetchDetailsBeforeCheckout();
 
-foreach( $userDetails as $key => $value){
-    $email = $value['email']; 
-    $firstName = $value['first_name']; 
-    $lastName = $value['last_name']; 
-    $contactNumber = $value['contact_number']; 
-    $address = $value['address']; 
-    $postalCode = $value['postal_code']; 
-    $city = $value['city']; 
-    $state = $value['state']; 
-    $country = $value['country']; 
-    $landmark = $value['landmark']; 
+foreach ($userDetails as $key => $value) {
+    $email = $value['email'];
+    $firstName = $value['first_name'];
+    $lastName = $value['last_name'];
+    $contactNumber = $value['contact_number'];
+    $address = $value['address'];
+    $postalCode = $value['postal_code'];
+    $city = $value['city'];
+    $state = $value['state'];
+    $country = $value['country'];
+    $landmark = $value['landmark'];
     break;
 }
 $cart = new Cart();
-$items = $cart->getCartItems();
-$items = $cart->mergeItemWithProducts($items);
+$cartItem = new Item();
+$items = $cart->getItems();
+$items = $cartItem->mergeItemWithProducts($items);
 ?>
 <div class="container mg-top-30">
     <div class="row">
@@ -36,7 +42,7 @@ $items = $cart->mergeItemWithProducts($items);
     <div class="row mg-top-30 mg-bot-30">
         <div class="col-sm-12">
             <h5>Billing Details</h5>
-            <form action="actions/stripe_payment.php" method="POST" id="paymentFrm">
+            <form action="actions/payments.php" method="POST" id="paymentFrm">
 
                 <div class="form-group">
                     <label for="first_name">First name:</label>
@@ -104,19 +110,17 @@ $items = $cart->mergeItemWithProducts($items);
                     <!-- Product Info -->
                     <?php
                     $subTotal = 50;
-                    foreach( $items as $item){
-                        // print_r($item);
+                    foreach ($items as $item) {
                         $product = $item['product_data']['name'];
                         $amount = $item['product_data']['amount'];
                         $qty = $item['qty'];
-                        $total = floatval( $amount ) * $qty;
-                        $subTotal += $total;
-                        ?>
+                        $total = floatval($amount) * $qty;
+                        $subTotal += $total; ?>
                         <p
                             ><b>Item :</b> 
-                            <?php echo $product;?>
-                            x <?php echo $qty;?>
-                            <span style="padding-left: 50px;"><?php echo $total;?> &#8377;</span>
+                            <?php echo $product; ?>
+                            x <?php echo $qty; ?>
+                            <span style="padding-left: 50px;"><?php echo $total; ?> &#8377;</span>
                         </p>
                         <?php
                     }

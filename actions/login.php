@@ -4,11 +4,9 @@ require_once dirname(__FILE__).'/../config.php';
 use Includes\Helpers\Security;
 use Includes\Db\User;
 
-if( isset( $_POST['submit'] ) ){
-
-    $token = isset(  $_POST['csrf'] ) ?  $_POST['csrf'] : '';
-    if( Security::validateCSRF( $token, 'csrf' ) )
-    {
+if (isset($_POST['submit'])) {
+    $token = isset($_POST['csrf']) ?  $_POST['csrf'] : '';
+    if (Security::validateCSRF($token, 'csrf')) {
         $user = new User();
         $user->select('*');
         $user->where('username', '=', 'sebin');
@@ -17,13 +15,9 @@ if( isset( $_POST['submit'] ) ){
         $user->where('status', '=', 'active');
         $result = $user->get();
         
-        $_SESSION['user_data'] = ( isset( $result[0] ) ) ? $result[0] : '';
+        $_SESSION['user_data'] = (isset($result[0])) ? $result[0] : '';
         header('Location: '. BASE_URL);
-        // print_r($_SESSION);
-        // print_r($result[0]);
-    }
-    else{
+    } else {
         echo "problem";
     }
-
 }

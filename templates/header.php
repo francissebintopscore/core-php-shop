@@ -2,6 +2,7 @@
 require_once dirname(__FILE__).'/../config.php';
 
 use Includes\Helpers\User;
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,24 +41,22 @@ use Includes\Helpers\User;
                     <a class="nav-link" href="<?php echo BASE_URL;?>">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="<?php echo BASE_URL;?>/shop.php">Shop</a>
+                    <a class="nav-link" href="<?php echo BASE_URL;?>shop.php">Shop</a>
                 </li>
                 <?php
-                if( User::userLoggedIn() ){
+                if (User::userLoggedIn()) {
                     ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?php echo BASE_URL;?>/cart.php">Cart</a>
+                        <a class="nav-link" href="<?php echo BASE_URL; ?>cart.php">Cart</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?php echo BASE_URL;?>/logout.php">Logout</a>
+                        <a class="nav-link" href="<?php echo BASE_URL; ?>logout.php">Logout</a>
                     </li>
                 <?php
-                }
-                else
-                {
+                } else {
                     ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?php echo BASE_URL;?>/login.php">Login</a>
+                        <a class="nav-link" href="<?php echo BASE_URL; ?>login.php">Login</a>
                     </li>
                     <?php
                 }

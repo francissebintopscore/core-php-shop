@@ -1,161 +1,87 @@
 <?php
 namespace Includes\Db;
 
+use Includes\Helpers\User;
 
-class Cart extends Query{
-
-
+class Cart extends Query
+{
     protected $userId;
-    protected $cartItems =array();
+    protected $items = [];
 
     public function __construct()
     {
         parent::__construct();
-        $this->userId = isset( $_SESSION['user_data']['id'] ) ? $_SESSION['user_data']['id'] : 0 ;
-        $this->setCartItems();
-        // $this->mergeItemWithProducts();
-        $this->setCartCookie();
+        $this->userId = User::getCurrentUserId();
+        $this->setItems();
+        $this->setCookie();
     }
     
-    public function getCartItems()
+    public function getItems()
     {
-        // print_r($this->cartItems);
-        return $this->cartItems;
+        return $this->items;
     }
 
-    public function setCartItems()
+    public function setItems()
     {
-        
-        if( isset( $_COOKIE['cart_items'] ) && !empty( $_COOKIE['cart_items'] ) ){
-            $this->cartItems = unserialize( $_COOKIE['cart_items'] );
-        }
-        else
-        {
-            $this->cartItems = $this->getUserCartItems();
+        if (isset($_COOKIE['cart_items']) && !empty($_COOKIE['cart_items'])) {
+            $this->items = unserialize($_COOKIE['cart_items']);
+        } else {
+            $this->items = $this->getUseritems();
         }
     }
 
-    protected function getUserCartItems()
+    protected function getUseritems()
     {
-        
         $items = $_SESSION['user_data']['cart_items'];
-        if( !empty( $items ) ){
-            // return unserialize( User::getUserCartItems( $this->userId) );
-            return unserialize( $items );
+        if (!empty($items)) {
+            return unserialize($items);
         }
         return array();
     }
-    public static function addCartItem( $newItem )
+    public function addItem($newItem)
     {
-
-        $cart = new Cart();
-        $items = $cart->getCartItems();
-
-        $flag = true;
-        
-        foreach($items as $key => $item)
-        {
-            if( $item['product_id'] === $newItem['product_id'] ){
-                
+        $items = $this->getItems();
+        $flag = true;   
+        foreach ($items as $key => $item) {
+            if ($item['product_id'] === $newItem['product_id']) {
                 $items[$key]['qty'] = $item['qty'] + intval($newItem['qty']);
-                // print_r($items[$key]['qty']);
                 $flag = false;
                 break;
             }
-            
-
         }
-        if( $flag )
-        {
+        if ($flag) {
             array_push($items, $newItem);
         }
-        // print_r($items);
-        $cart->cartItems = $items;
-        $cart->setCartCookie();
-        
+        $this->items = $items;
+        $this->setCookie();
     }
-    public static function removeCartItem( $productId )
+    public function removeItem($productId)
     {
-        $cart = new Cart();
-        $items = $cart->getCartItems();
-        $items = array_filter( $items, function($value) use ($productId){
-            return $value['product_id'] != $productId;
-        }
-        );
-        $cart->cartItems = $items;
-        $cart->setCartCookie();
-        
-    }
-
-    public static function updateCartItem($productDatas)
-    {
-        $cart = new Cart();
-        $cart->cartItems = $productDatas;
-        $cart->setCartCookie();
-    }
-
-
-    public static function saveCartItems()
-    {
-
-    }
-
-    protected function setCartCookie()
-    {
-        $value = serialize( $this->cartItems );
-        setcookie( 'cart_items', $value , time() + (86400 * 30), "/");
-    }
-    public function clearCartItems()
-    {
-        $this->cartItems = [];
-        $this->setCartCookie();
-        // print_r( $this->cartItems );
-    }
-
-    public function mergeItemWithProducts()
-    {
-
-        $items = $this->cartItems;
-        if( empty( $items ) )
-        {
-            return array();
-        }
-        $productIds =array();
-
-        foreach( $items as $item)
-        {
-            $productIds = [...$productIds, $item['product_id']];
-        }
-        sort($productIds);
-        $productIds = implode( ',',$productIds );
-        $sql = "SELECT `id`,`name`,`image`,`amount`, `stock` FROM `products` WHERE `id` IN($productIds)";
-        $productIds = explode( ',',$productIds );
-        $result = $this->rawQuery($sql);
-
-        $i = 0;
-        while($row = $result->fetch_assoc()) 
-        {
-            
-        //    print_r($row);
-        //    echo "<br>";
-            $productId = ( isset( $productIds[$i] ) ) ? $productIds[$i] : 0;
-
-            // if( $row['id'] == $productId )
-            // {
-            //     $items[$i]['product_data'] = $row; 
-            // }
-            foreach( $items as $key => $value )
-            {
-                if( $row['id'] == $value['product_id'] )
-                {
-                    $items[$key]['product_data'] = $row; 
-                    break;
-                }
+        $items = $this->getItems();
+        $items = array_filter(
+            $items,
+            function ($value) use ($productId) {
+                return $value['product_id'] != $productId;
             }
-            
-            $i++;
-        }
-        
-        return $items;
+        );
+        $this->items = $items;
+        $this->setCookie();
+    }
+
+    public function updateItem($productDatas)
+    {
+        $this->items = $productDatas;
+        $this->setCookie();
+    }
+
+    protected function setCookie()
+    {
+        $value = serialize($this->items);
+        setcookie('cart_items', $value, time() + (86400 * 30), "/");
+    }
+    public function clearitems()
+    {
+        $this->items = [];
+        $this->setCookie();
     }
 }

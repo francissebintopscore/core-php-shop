@@ -3,20 +3,17 @@ require_once 'templates/header.php';
 
 use Includes\Helpers\User;
 use Includes\Db\Cart;
+use Includes\Db\Item;
 
-
-if ( !User::userLoggedIn() ) 
-{
+if (!User::userLoggedIn()) {
     header('Location: '. BASE_URL);
     die();
 }
 
 $cart = new Cart();
-$items = $cart->getCartItems();
-// print_r($items);
-$items = $cart->mergeItemWithProducts($items);
-// print_r($_COOKIE);
-// print_r($items);
+$cartItem = new Item();
+$items = $cart->getItems();
+$items = $cartItem->mergeItemWithProducts($items);
 $imgBase = UPLOADS_URL.'products/';
 $subTotal = 0.00;
 $shipping = 50.00;
@@ -43,32 +40,31 @@ $shipping = 50.00;
                     </thead>
                     <tbody>
                         <?php
-                        foreach ( $items as $key => $value) {
+                        foreach ($items as $key => $value) {
                             $id = $value['product_data']['id'];
                             $img = $imgBase . $value['product_data']['image'];
                             $name = $value['product_data']['name'];
                             $amount = $value['product_data']['amount'];
                             $maxStocks = $value['product_data']['stock'];
                             $qty = $value['qty'];
-                            $totalAmount = intval( $qty ) * floatval($amount);
-                            $subTotal += $totalAmount;
-                            ?>
-                            <tr data-product-id="<?php echo $id;?>">
+                            $totalAmount = intval($qty) * floatval($amount);
+                            $subTotal += $totalAmount; ?>
+                            <tr data-product-id="<?php echo $id; ?>">
                                 <td>
-                                    <img src="<?php echo $img;?>"
+                                    <img src="<?php echo $img; ?>"
                                         width="145" alt="product-img">
                                 </td>
                                 <td>
-                                    <span><?php echo $name;?></span>
+                                    <span><?php echo $name; ?></span>
                                 </td>
                                 <td>
-                                    <span class="price"><?php echo $amount;?></span> &#8377;
+                                    <span class="price"><?php echo $amount; ?></span> &#8377;
                                 </td>
                                 <td>
-                                    <input type="number" class="product-qty" min="0" max="<?php echo $maxStocks;?>" value="<?php echo $qty;?>">
+                                    <input type="number" class="product-qty" min="0" max="<?php echo $maxStocks; ?>" value="<?php echo $qty; ?>">
                                 </td>
                                 <td>
-                                    <span class="total"><?php echo $totalAmount;?></span> &#8377;
+                                    <span class="total"><?php echo $totalAmount; ?></span> &#8377;
                                 </td>
                                 <td>
                                     <span class="cart-remove">&#9940;</span>

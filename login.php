@@ -4,8 +4,7 @@ require_once 'templates/header.php';
 use Includes\Helpers\Security;
 use Includes\Helpers\User;
 
-if (User::userLoggedIn()) 
-{
+if (User::userLoggedIn()) {
     header('Location: '. BASE_URL);
 }
 ?>
@@ -21,7 +20,8 @@ if (User::userLoggedIn())
                     <input type="hidden" name="csrf" value="<?php echo Security::generateCSRF('csrf');?>">
                     <div class="form-group">
                         <label for="username">Username:</label>
-                        <input type="text" class="form-control" id="username" placeholder="Enter username" name="username">
+                        <input type="text" class="form-control" id="username" placeholder="Enter username"
+                            name="username">
                     </div>
                     <div class="form-group">
                         <label for="pwd">Password:</label>

@@ -1,8 +1,8 @@
 <?php
 namespace Includes\Db;
 
-
-class Connection{
+class Connection
+{
     
     /**
      * The name of the db host.
@@ -42,45 +42,16 @@ class Connection{
 
     public function __construct()
     {
-        $conn = new \mysqli( $this->host, $this->user, $this->psw, $this->db );
-		if($conn->connect_error) {
-			return false;
-		}
+        $conn = new \mysqli($this->host, $this->user, $this->psw, $this->db);
+        if ($conn->connect_error) {
+            return false;
+        }
 
         $this->connection = $conn;
-        
     }
 
-    public function sqlSelect( $query, $format = '' , ...$vars ) {
-    
-		$stmt = $this->connection->prepare($query);
-		if($format) {
-			$stmt->bind_param($format, ...$vars);
-		}
-		if($stmt->execute()) {
-			$res = $stmt->get_result();
-			$stmt->close();
-			return $res;
-		}
-		$stmt->close();
-        $this->connection->close();
-		return false;
-
-	}
-
-    protected function extractOutput( $result ){
-
-        $output = array();
-
-        if ( $result && $result->num_rows >0 ) {
-            while ($row = $result->fetch_assoc()) {
-                $output = [$row,...$output];
-            }
-        }
-        return $output;
-    }
-
-    protected function getConnection(){
+    protected function getConnection()
+    {
         return $this->connection;
     }
 }
