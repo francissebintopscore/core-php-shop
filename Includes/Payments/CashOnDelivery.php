@@ -4,10 +4,10 @@ namespace Includes\Payments;
 use Includes\Interfaces\PaymentMethod;
 use Includes\Helpers\User;
 
-class Stripe implements PaymentMethod
+class CashOnDelivery implements PaymentMethod
 {
     protected $token;
-    public $paymentStatus = 'failed';
+    public $paymentStatus = 'pending payment';
     public $transactionID = '';
     public $paidCurrency = 'INR';
     public $statusMessage = 'Payment failed!';

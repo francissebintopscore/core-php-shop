@@ -18,7 +18,7 @@ require_once 'templates/header.php';
                     <h4>Payment Information</h4>
                     <p><b>Reference Number:</b> <?php echo $orderId; ?></p>
                     <p><b>Transaction ID:</b> <?php echo $transactionID; ?></p>
-                    <p><b>Paid Amount:</b> <?php echo $paidAmount.' '. strtoupper($paidCurrency); ?></p>
+                    <p><b>Amount:</b> <?php echo $paidAmount.' '. strtoupper($paidCurrency); ?></p>
                     <p><b>Payment Status:</b> <?php echo $paymentStatus; ?></p>
                     <?php
                 } else {
