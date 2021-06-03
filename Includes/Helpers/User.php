@@ -10,6 +10,7 @@ class User
         } 
         return false;
     }
+    
     public static function getCurrentUserId()
     {
         if (isset($_SESSION['user_data']) && $_SESSION['user_data'] !== '') {

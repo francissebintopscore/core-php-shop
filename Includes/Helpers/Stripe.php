@@ -101,6 +101,7 @@ class Stripe
             $this->apiError = $e->getMessage();
         }
     }
+    
     protected function isSuccessfullTransaction()
     {
         if (empty($this->apiError) && $this->customer) {
@@ -134,6 +135,7 @@ class Stripe
         }
         return false;
     }
+
     public function getOrderDetails()
     {
         $chargeJson = $this->charge->jsonSerialize();
@@ -180,6 +182,7 @@ class Stripe
     {
         return $this->statusMessage;
     }
+
     public function setStatusMessage()
     {
         if ($this->paymentStatus == 'succeeded') {

@@ -28,6 +28,7 @@ class Stripe implements PaymentMethod
     {
         $this->setPaymentData();
     }
+
     public function setPaymentData(){
         $this->token        = 'stripeToken';
         $this->name         = 'first_name';
@@ -42,6 +43,7 @@ class Stripe implements PaymentMethod
         $this->State        = 'State';
         $this->country      = 'country';
     }
+
     public function getOrderDetails(){
         return ([
             'user_id'               => User::getCurrentUserId(),
@@ -54,8 +56,10 @@ class Stripe implements PaymentMethod
 
             ]);
     }
+
     public function getStatusMessage()
     {
         return $this->statusMessage;
     }
+    
 }

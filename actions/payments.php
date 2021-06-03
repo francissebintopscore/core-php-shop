@@ -29,15 +29,6 @@ try {
     $paidCurrency   = $stripe->paidCurrency;
     $paymentStatus  = $stripe->paymentStatus;
     $statusMessage  = $stripe->getStatusMessage();
-
-    // $orderData = array(
-    //     'orderId'           => $orderId,
-    //     'transactionID'     => $stripe->transactionID,
-    //     'paidAmount'        => $stripe->paidAmount,
-    //     'paidCurrency'      => $stripe->paidCurrency,
-    //     'paymentStatus'     => $stripe->paymentStatus,
-    //     'statusMessage'     => $stripe->getStatusMessage(),
-    // );
     
 } catch (\Throwable $th) {
 }

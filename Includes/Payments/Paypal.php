@@ -1,7 +1,7 @@
 <?php
 namespace Includes\Payments;
 
-use Includes\Abstracts\PaymentMethod;
+use Includes\Interfaces\PaymentMethod;
 
 class Paypal extends PaymentMethod
 {

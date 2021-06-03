@@ -38,6 +38,7 @@ class Cart extends Query
         }
         return array();
     }
+    
     public function addItem($newItem)
     {
         $items = $this->getItems();
@@ -55,6 +56,7 @@ class Cart extends Query
         $this->items = $items;
         $this->setCookie();
     }
+
     public function removeItem($productId)
     {
         $items = $this->getItems();
@@ -79,6 +81,7 @@ class Cart extends Query
         $value = serialize($this->items);
         setcookie('cart_items', $value, time() + (86400 * 30), "/");
     }
+
     public function clearitems()
     {
         $this->items = [];

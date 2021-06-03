@@ -28,7 +28,9 @@ class CashOnDelivery implements PaymentMethod
     {
         $this->setPaymentData();
     }
-    public function setPaymentData(){
+
+    public function setPaymentData()
+    {
         $this->token        = 'stripeToken';
         $this->name         = 'first_name';
         $this->name         = $this->name . ' ' . 'last_name';
@@ -42,7 +44,9 @@ class CashOnDelivery implements PaymentMethod
         $this->State        = 'State';
         $this->country      = 'country';
     }
-    public function getOrderDetails(){
+    
+    public function getOrderDetails()
+    {
         return ([
             'user_id'               => User::getCurrentUserId(),
             'payment_gateway_id'    => 1,
@@ -54,6 +58,7 @@ class CashOnDelivery implements PaymentMethod
 
             ]);
     }
+    
     public function getStatusMessage()
     {
         return $this->statusMessage;

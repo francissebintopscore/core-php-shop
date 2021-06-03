@@ -49,11 +49,13 @@ class Query extends Connection
 
         return true;
     }
+
     public function formatMapper($value)
     {
         $type = gettype($value);
         return $type[0];
     }
+
     public function get()
     {
         $sql = "SELECT $this->_select FROM $this->table WHERE $this->_where";
@@ -94,24 +96,6 @@ class Query extends Connection
         }
         return $output;
     }
-    
-    // public function findAll()
-    // {
-    //     $sql = "SELECT * FROM $this->table WHERE `status`=?";
-
-    //     $result = $this->sqlSelect($sql, 's', 'publish');
-        
-    //     return $this->extractOutput($result);
-    // }
-
-    // public function find($id, $selects='*')
-    // {
-    //     $sql = "SELECT $selects FROM $this->table WHERE `id`=?";
-
-    //     $result = $this->sqlSelect($sql, 'i', $id);
-
-    //     return $this->extractOutput($result);
-    // }
 
     public function rawQuery($sql)
     {
@@ -122,7 +106,6 @@ class Query extends Connection
         return [];
     }
 
-    
     public static function update($data, $id, $table)
     {
         $query = new Query();
